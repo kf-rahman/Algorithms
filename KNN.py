@@ -20,18 +20,13 @@ def simple_knn(x_test,y_test,x,y,labels):
         dist.append(manhattan_distance(x,x_test,y,y_test))
 
     sorted_dist = sorted(dist)
-    pred_label = {}
     k = 2
-    for label in range(0,len(labels)):
-        neighbours = sorted_dist[:k]
-        for i in neighbours:
-            for j in range(0,len(dist)):
-                if i  == dist[j]:
-                    if labels[j] in pred_label:
+    pred_label = {}
 
-                        pred_label[labels[j]] += 1
-                    else:
-                        pred_label[labels[j]] = 1
+
+    for index, distance in sorted(zip(range(len(dist)), dist), key=lambda x: x[1])[:k]:
+        label = labels[index]
+        pred_label[label] = pred_label.get(label, 0) + 1
 
     pred_label = max(pred_label, key=pred_label.get)
     print(pred_label)
